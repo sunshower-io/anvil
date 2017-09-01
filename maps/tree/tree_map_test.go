@@ -1,11 +1,11 @@
-package maps 
+package tree 
 
 import (
 	"math/rand"
 	"sort"
 	"testing"
-    "github.com/sunshower-io/anvil/core"
     "github.com/stretchr/testify/assert"
+    core "github.com/sunshower-io/anvil/collections"
 )
 
 func compareInt(lhs, rhs core.Value) int {

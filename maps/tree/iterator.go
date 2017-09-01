@@ -1,6 +1,9 @@
-package maps 
+package tree 
 
-import "errors"
+import (
+    "errors"
+    "github.com/sunshower-io/anvil/collections"
+)
 
 var NoSuchElementException = errors.New("No element")
 
@@ -10,6 +13,7 @@ type Pair struct {
 }
 
 type Iterator struct {
+    collections.Iterator
 	node *node
 	tree *TreeMap
 }

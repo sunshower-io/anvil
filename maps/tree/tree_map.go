@@ -1,66 +1,55 @@
-package maps 
+package tree 
 
 import (
 	"bytes"
 	"errors"
 	"fmt"
 	"strings"
-    core "github.com/sunshower-io/anvil/core"
+    "github.com/sunshower-io/anvil/collections"
 )
 
 var IllegalState = errors.New("Illegal state")
 
 
-type Comparator interface {
-	Compare(
-            core.Value, 
-            core.Value,
-    ) int
-}
-
-type FunctionComparator struct {
-	Comparator
-
-	Ord func(core.Value, core.Value) int
-}
-
-func (c *FunctionComparator) Compare(lhs, rhs core.Value) int {
-	return c.Ord(lhs, rhs)
-}
 
 type TreeMap struct {
+    collections.SortedMap
 	size int
 
 	root *node
 
 	minimum *node
+    
 	maximum *node
 
-	comparator Comparator
+	comparator collections.Comparator
 }
 
 
 
-func NewTreeMap(f func(core.Value, core.Value) int) *TreeMap {
+func NewTreeMap(f func(
+        collections.Value, 
+        collections.Value,
+) int) *TreeMap {
 	return &TreeMap{
 		size:    0,
 		root:    nil,
 		minimum: nil,
 		maximum: nil,
-		comparator: &FunctionComparator{
+		comparator: &collections.FunctionComparator{
 			Ord: f,
 		},
 	}
 }
 
-func (t *TreeMap) FirstValue() core.Value {
+func (t *TreeMap) FirstValue() collections.Value {
 	if t.size >= 0 {
 		return t.minimum.value
 	}
 	return nil
 }
 
-func (t *TreeMap) FirstKey() core.Value {
+func (t *TreeMap) FirstKey() collections.Key {
 	if t.size >= 0 {
 		return t.minimum.key
 	}
@@ -97,7 +86,7 @@ func write(n *node, depth int, b *bytes.Buffer) {
 	}
 }
 
-func (t *TreeMap) compare(lhs, rhs core.Value) int {
+func (t *TreeMap) compare(lhs, rhs collections.Value) int {
 	return t.comparator.Compare(lhs, rhs)
 }
 

@@ -1,6 +1,6 @@
-package maps
+package tree 
 
-import "github.com/sunshower-io/anvil/core"
+import core "github.com/sunshower-io/anvil/collections"
 
 type color int
 

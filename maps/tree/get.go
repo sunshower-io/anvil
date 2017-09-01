@@ -1,6 +1,6 @@
-package maps
+package tree 
 
-import "github.com/sunshower-io/anvil/core"
+import core "github.com/sunshower-io/anvil/collections"
 
 func (t *TreeMap) Get(key core.Value) core.Value {
 	node, match := t.greaterThanOrEqualTo(key)

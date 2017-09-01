@@ -1,6 +1,6 @@
-package maps
+package tree 
 
-import "github.com/sunshower-io/anvil/core"
+import core "github.com/sunshower-io/anvil/collections"
 
 func (t *TreeMap) Put(key, value core.Value) bool {
 	n := t.insert(key, value)

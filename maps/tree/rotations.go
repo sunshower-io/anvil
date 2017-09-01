@@ -1,4 +1,4 @@
-package maps 
+package tree 
 
 func (t *TreeMap) rotateRight(n *node) {
 	l := n.left
