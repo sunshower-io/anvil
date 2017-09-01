@@ -84,6 +84,7 @@ func (m *HashMap) Remove(
     }
     
     j = idx
+    v := result
     
     for {
         j = (j+ 1) % len
@@ -91,7 +92,7 @@ func (m *HashMap) Remove(
         result = values[j]
         
         if result == nil {
-            return nil
+            return v.value
         }
         
         k = h(values[j].key) % len
