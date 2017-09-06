@@ -17,6 +17,14 @@ type entry struct {
     value       collections.Value
 }
 
+func (e *entry) Key() collections.Key {
+    return e.key
+}
+
+func (e *entry) Value() collections.Value {
+    return e.value
+}
+
 type HashFunction func(collections.Value) int
 
 func NewLinearProbeHashMap(f HashFunction) *linearProbeHashMap {
@@ -47,6 +55,8 @@ func (h *linearProbeHashMap) Iterator() collections.Iterator {
 func(h *linearProbeHashMap) Size() int {
     return h.len
 }
+
+
 
 
 func (h *linearProbeHashMap) Put(
@@ -135,6 +145,29 @@ func (h *linearProbeHashMap) Remove(
     h.len -= 1
     return value
 }
+
+func (h *linearProbeHashMap) ContainsKey(
+        key collections.Key,
+) bool {
+    values      := h.values
+    l           := len(values)
+    hf          := h.HashFunction
+    
+    i           := (hf(key) & mask) % l
+    for {
+        v := values[i]
+        if v == nil {
+            return false
+        }
+        
+        if v.key == key {
+            return true 
+        }
+        i = ((i + 1) & mask) % l
+    }
+    
+}
+
 
 
 func (h *linearProbeHashMap) Get(

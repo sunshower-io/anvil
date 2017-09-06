@@ -122,9 +122,28 @@ func TestInsertionAndRemovalOfValuesWorks(t *testing.T) {
     
 }
 
-func TestInsertionOfManyStringsWorks(t *testing.T) {
-    m := NewLinearProbeHashMap(strings.DefaultHash)
+
+func TestIteratingOverManyStringsWorks(t *testing.T) {
     
+    m := NewLinearProbeHashMap(strings.DefaultHash) 
+    
+    for i := 0; i < 1000; i++ {
+        m.Put(randomString(40), i)
+    }
+    
+    count := 0
+    
+    for iter := m.Iterator(); iter.HasNext(); {
+        count++
+        value, _ := iter.Next()
+        assert.True(t, m.ContainsKey(value.(collections.Entry).Key()))
+    }
+    assert.Equal(t, 1000, count)
+    
+}
+
+func TestInsertionOfManyStringsWorks(t *testing.T) {
+    m := NewLinearProbeHashMap(strings.DefaultHash) 
     hm := make(map[string]int)
     
     for i := 0; i < 10000; i++ {
