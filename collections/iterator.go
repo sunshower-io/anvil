@@ -10,5 +10,5 @@ type Iterator interface {
 }
 
 type Iterable interface {
-    Iterator()
+    Iterator() Iterator 
 }

@@ -36,6 +36,13 @@ type linearProbeHashMap struct {
     loadfactor          float32
 }
 
+func (h *linearProbeHashMap) Iterator() collections.Iterator {
+    return &linearProbeIterator{
+        m:h,
+        vlen: len(h.values),
+    }
+}
+
 
 func(h *linearProbeHashMap) Size() int {
     return h.len
@@ -182,4 +189,31 @@ func locate(
         }
         i = ((i + 1) & mask) % l 
     }
+}
+
+
+
+
+type linearProbeIterator struct {
+    collections.Iterator
+    current         int
+    cidx            int
+    m               *linearProbeHashMap
+    vlen            int
+}
+
+func (l *linearProbeIterator) HasNext() bool {
+    return l.current < l.m.len
+}
+
+func (l *linearProbeIterator) Next() (collections.Value, error) {
+    for i := l.cidx; i < l.vlen; i++ {
+        v := l.m.values[i]
+        if v != nil {
+            l.cidx = i
+            l.current++
+            return v, nil
+        }
+    }
+    return nil, collections.IteratorOverflow
 }

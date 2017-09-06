@@ -1,28 +1,18 @@
 package hash
 
 import (
-    "math"
     "bytes"
     "testing"
     "math/rand"
     "github.com/stretchr/testify/assert"
     "github.com/sunshower-io/anvil/collections"
+    "github.com/sunshower-io/anvil/f/strings"
 )
 
 func intFunc(value collections.Value) int {
     return value.(int)
 }
 
-func stringFunc(value collections.Value) int {
-    
-    j := 0
-    v := value.(string)
-    l := len(v)
-    for i := 0; i < l; i++ {
-        j += int(v[i]) * int(math.Pow(31, float64(l - 1 - i)))
-    }
-    return j
-}
 
 
 func TestInsertionWithManyCollisionsWorks(t *testing.T) {
@@ -57,7 +47,7 @@ func TestInsertionWithCollisionWorks(t *testing.T) {
 
 func TestInsertionAndRemovalOfVeryManyStringsWorks(t *testing.T) {
     
-    m := NewLinearProbeHashMap(stringFunc)
+    m := NewLinearProbeHashMap(strings.DefaultHash)
     k := make(map[string]int)
     
     for i := 0; i < 100; i++ {
@@ -79,7 +69,7 @@ func TestInsertionAndRemovalOfVeryManyStringsWorks(t *testing.T) {
 
 func TestInsertionAndRemovalOfManyStringsWorks(t *testing.T) {
     
-    m := NewLinearProbeHashMap(stringFunc)
+    m := NewLinearProbeHashMap(strings.DefaultHash)
     k := make(map[string]int)
     
     for i := 0; i < 10; i++ {
@@ -114,7 +104,7 @@ func checkSize(t *testing.T, entries []*entry, expected int) {
 
 func TestInsertionResultsInValueBeingInsertedAndRetrievableByKey(t *testing.T) {
     
-    m := NewLinearProbeHashMap(stringFunc)
+    m := NewLinearProbeHashMap(strings.DefaultHash)
     m.Put("hello", "world")
     v := m.Get("hello")
     assert.Equal(t, "world", v)
@@ -122,7 +112,7 @@ func TestInsertionResultsInValueBeingInsertedAndRetrievableByKey(t *testing.T) {
 
 
 func TestInsertionAndRemovalOfValuesWorks(t *testing.T) {
-    m := NewLinearProbeHashMap(stringFunc)
+    m := NewLinearProbeHashMap(strings.DefaultHash)
     m.Put("hello", "world")
     v := m.Get("hello")
     assert.Equal(t, "world", v)
@@ -133,7 +123,7 @@ func TestInsertionAndRemovalOfValuesWorks(t *testing.T) {
 }
 
 func TestInsertionOfManyStringsWorks(t *testing.T) {
-    m := NewLinearProbeHashMap(stringFunc)
+    m := NewLinearProbeHashMap(strings.DefaultHash)
     
     hm := make(map[string]int)
     
@@ -166,10 +156,23 @@ func TestInsertionOfManyElementsWorks(t *testing.T) {
 }
 
 func TestInsertionsAndDeletionsWork(t *testing.T) {
-    m := NewLinearProbeHashMap(stringFunc)
+    m := NewLinearProbeHashMap(strings.DefaultHash)
     m.Put("hello", "world")
     v := m.Get("hello")
     assert.Equal(t, "world", v)
+}
+
+
+func TestIteratingWorks(t *testing.T) {
+    
+    m := NewLinearProbeHashMap(strings.DefaultHash)
+    m.Put("hello", "world")
+    count := 0 
+    for iter := m.Iterator(); iter.HasNext(); {
+        iter.Next()
+        count++
+    }
+    assert.Equal(t, count, 1)
 }
 
 const alphabet = "abcdefghijklmnopqrstuvwxwy"

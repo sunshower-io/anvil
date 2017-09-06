@@ -6,6 +6,7 @@ type Entry interface {
 }
 
 type Map interface {
+    Iterable 
     Clear() 
     
     ContainsKey(Key) bool
