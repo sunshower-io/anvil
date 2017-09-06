@@ -96,7 +96,19 @@ func TestInsertionAndRemovalOfManyStringsWorks(t *testing.T) {
         }
     }
     assert.Equal(t, 0, c)
+    assert.Equal(t, m.Size(), 0)
     
+    checkSize(t, m.values, 0)
+    
+}
+func checkSize(t *testing.T, entries []*entry, expected int) {
+    c := 0
+    for _, v := range entries {
+        if v != nil {
+            c++
+        }
+    }
+    assert.Equal(t, c, expected)
 }
 
 
@@ -164,12 +176,13 @@ const alphabet = "abcdefghijklmnopqrstuvwxwy"
 
 func randomString(l int) string {
     
-    rand := rand.NewSource(100)
+    
     var r bytes.Buffer
     for i := 0; i < l; i++ {
-        ch := alphabet[int(rand.Int63()) % len(alphabet)]
+        ch := alphabet[int(rand.Int()) % len(alphabet)]
         r.WriteRune(rune(ch))
     }
-    return r.String()
+    c := r.String()
+    return c
 }
 

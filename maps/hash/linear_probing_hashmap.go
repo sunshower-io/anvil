@@ -1,8 +1,8 @@
 package hash
 
 import (
-    "github.com/sunshower-io/anvil/collections"
     "math"
+    "github.com/sunshower-io/anvil/collections"
 )
 
 const (
@@ -34,6 +34,11 @@ type linearProbeHashMap struct {
     values              []*entry
     HashFunction        HashFunction
     loadfactor          float32
+}
+
+
+func(h *linearProbeHashMap) Size() int {
+    return h.len
 }
 
 
