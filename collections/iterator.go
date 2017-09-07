@@ -11,4 +11,6 @@ type Iterator interface {
 
 type Iterable interface {
     Iterator() Iterator 
+    
+    Range() <- chan Value
 }

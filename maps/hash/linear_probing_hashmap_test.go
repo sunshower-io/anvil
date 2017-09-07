@@ -119,7 +119,23 @@ func TestInsertionAndRemovalOfValuesWorks(t *testing.T) {
     u := m.Remove("hello")
     assert.Nil(t, m.Get("hello"))
     assert.Equal(t, "world", u)
+}
+
+
+func TestIteratingViaRangeWorks(t *testing.T) {
     
+    m := NewLinearProbeHashMap(strings.DefaultHash)
+    
+    for i := 0; i < 1000; i++ {
+        m.Put(randomString(40), i)
+    }
+   
+    count := 0
+    for value := range m.Range() {
+        count++
+        assert.True(t, m.ContainsKey(value.(collections.Entry).Key()))
+    }
+    assert.Equal(t, count, 1000)
 }
 
 
@@ -132,7 +148,6 @@ func TestIteratingOverManyStringsWorks(t *testing.T) {
     }
     
     count := 0
-    
     for iter := m.Iterator(); iter.HasNext(); {
         count++
         value, _ := iter.Next()

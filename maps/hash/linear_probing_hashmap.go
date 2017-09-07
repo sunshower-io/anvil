@@ -7,8 +7,6 @@ import (
 
 const (
     INITIAL_CAPACITY            = 10
-    
-    
     DEFAULT_LOAD_FACTOR         =  float32(0.90)
 )
 
@@ -54,6 +52,23 @@ func (h *linearProbeHashMap) Iterator() collections.Iterator {
 
 func(h *linearProbeHashMap) Size() int {
     return h.len
+}
+
+
+func (h *linearProbeHashMap) Range() <- chan collections.Value {
+    ch := make(chan collections.Value, h.len)
+    go func() {
+        values := h.values
+        l := len(values)
+        for i := 0; i < l; i++ {
+            v := values[i]
+            if v != nil {
+                ch <- v
+            }
+        }
+        close(ch)
+    }()
+    return ch
 }
 
 
