@@ -129,6 +129,8 @@ func TestIteratingViaRangeWorks(t *testing.T) {
     for i := 0; i < 1000; i++ {
         m.Put(randomString(40), i)
     }
+    
+    assert.Equal(t, 1000, m.Size())
    
     count := 0
     for value := range m.Range() {
@@ -212,8 +214,6 @@ func TestIteratingWorks(t *testing.T) {
 const alphabet = "abcdefghijklmnopqrstuvwxwy"
 
 func randomString(l int) string {
-    
-    
     var r bytes.Buffer
     for i := 0; i < l; i++ {
         ch := alphabet[int(rand.Int()) % len(alphabet)]
