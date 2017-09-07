@@ -5,10 +5,10 @@ import (
 	"sort"
 	"testing"
     "github.com/stretchr/testify/assert"
-    core "github.com/sunshower-io/anvil/collections"
+    "github.com/sunshower-io/anvil/collections"
 )
 
-func compareInt(lhs, rhs core.Value) int {
+func compareInt(lhs, rhs collections.Value) int {
 	return lhs.(int) - rhs.(int)
 }
 
@@ -50,6 +50,20 @@ func TestRemovingSingleValueWorks(t *testing.T) {
 	assert.Equal(t, tm.IsEmpty(), true)
 }
 
+
+func TestSimpleIterationWorks(t *testing.T) {
+    
+    tm := NewTreeMap(compareInt)
+    tm.Put(1, 2)
+    tm.Put(2, 2)
+    count := 0
+    for iter := tm.Iterator(); iter.HasNext(); {
+        iter.Next()
+        count++
+    }
+    assert.Equal(t, count, 2)
+}
+
 func TestIteratingOverMapWorks(t *testing.T) {
 
 	tm := NewTreeMap(compareInt)
@@ -63,9 +77,9 @@ func TestIteratingOverMapWorks(t *testing.T) {
 
 	assert.Equal(t, min, 0)
 	values := make([]int, tm.Size())
-	for iter := tm.Iterator(); iter.HasNext(); iter = iter.Next() {
-		nextKey := iter.NextKey()
-		values = append(values, nextKey.(int))
+	for iter := tm.Iterator(); iter.HasNext(); {
+		nextKey, _ := iter.Next()
+		values = append(values, nextKey.(collections.Entry).Key().(int))
 	}
 
 	assert.True(t, sort.IntsAreSorted(values))

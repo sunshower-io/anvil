@@ -56,8 +56,8 @@ func (t *TreeMap) FirstKey() collections.Key {
 	return nil
 }
 
-func (t *TreeMap) Iterator() Iterator {
-	return Iterator{tree: t, node: t.minimum}
+func (t *TreeMap) Iterator() collections.Iterator {
+	return &treemapIterator{tree: t, node: t.minimum}
 }
 
 func (t *TreeMap) IsEmpty() bool {

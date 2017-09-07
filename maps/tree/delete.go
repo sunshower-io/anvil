@@ -1,18 +1,21 @@
 package tree
 
-import core "github.com/sunshower-io/anvil/collections"
+import (
+    core "github.com/sunshower-io/anvil/collections"
+)
 
-func (t *TreeMap) Remove(key core.Value) bool {
+func (t *TreeMap) Remove(key core.Key) core.Value {
 	i := t.collectGreaterThanOrEqualTo(key)
 	if i.node != nil {
 		t.RemoveAll(i)
-		return true
+		return i.node.value 
 	}
-	return false
+	return nil 
 }
 
-func (t *TreeMap) RemoveAll(i Iterator) {
-	t.remove(i.node)
+func (t *TreeMap) RemoveAll(i core.Iterator) {
+    iter := i.(*treemapIterator)
+	t.remove(iter.node)
 }
 
 func (t *TreeMap) remove(n *node) {
@@ -144,9 +147,9 @@ func (t *TreeMap) recomputeSmallest() {
 	}
 }
 
-func (t *TreeMap) collectGreaterThanOrEqualTo(k core.Value) Iterator {
+func (t *TreeMap) collectGreaterThanOrEqualTo(k core.Value) *treemapIterator {
 	n, _ := t.greaterThanOrEqualTo(k)
-	return Iterator{tree: t, node: n}
+	return &treemapIterator{tree: t, node: n}
 }
 
 func (t *TreeMap) replace(old, new *node) {

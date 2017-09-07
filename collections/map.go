@@ -35,6 +35,7 @@ type Map interface {
 
 
 type SortedMap interface {
+    Map
     
     Comparator() Comparator
     
@@ -47,7 +48,5 @@ type SortedMap interface {
     LastValue() Value
     
     Last() Entry
-    
-    Range(Key, Key) SortedMap
     
 }

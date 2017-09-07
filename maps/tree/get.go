@@ -2,7 +2,7 @@ package tree
 
 import core "github.com/sunshower-io/anvil/collections"
 
-func (t *TreeMap) Get(key core.Value) core.Value {
+func (t *TreeMap) Get(key core.Key) core.Value {
 	node, match := t.greaterThanOrEqualTo(key)
 	if match {
 		return node.value
@@ -10,7 +10,7 @@ func (t *TreeMap) Get(key core.Value) core.Value {
 	return nil
 }
 
-func (t *TreeMap) greaterThanOrEqualTo(key core.Value) (*node, bool) {
+func (t *TreeMap) greaterThanOrEqualTo(key core.Key) (*node, bool) {
 	n := t.root
 	for {
 		if n == nil {

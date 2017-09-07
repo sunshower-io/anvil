@@ -1,8 +1,10 @@
-package tree 
+package tree
 
-import core "github.com/sunshower-io/anvil/collections"
+import (
+    core "github.com/sunshower-io/anvil/collections"
+)
 
-func (t *TreeMap) Put(key, value core.Value) bool {
+func (t *TreeMap) Put(key core.Key, value core.Value) core.Value {
 	n := t.insert(key, value)
 	if n == nil {
 		return false
@@ -57,7 +59,7 @@ func (t *TreeMap) Put(key, value core.Value) bool {
 		}
 		break
 	}
-	return true
+	return n.value 
 }
 
 func (t *TreeMap) insert(key, value core.Value) *node {

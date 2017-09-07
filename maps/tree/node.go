@@ -10,12 +10,20 @@ const (
 )
 
 type node struct {
-	key    core.Value
+	key    core.Key
 	value  core.Value
 	parent *node
 	left   *node
 	right  *node
 	color  color
+}
+
+func (n *node) Key() core.Key {
+    return n.key
+}
+
+func (n *node) Value() core.Value {
+    return n.value
 }
 
 var leftMost *node

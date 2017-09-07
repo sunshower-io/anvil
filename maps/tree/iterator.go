@@ -12,46 +12,45 @@ type Pair struct {
 	Value interface{}
 }
 
-type Iterator struct {
+type treemapIterator struct {
     collections.Iterator
-	node *node
-	tree *TreeMap
+    
+    
+    node *node
+    tree *TreeMap
 }
 
-func (i Iterator) HasNext() bool {
+func (i *treemapIterator) HasNext() bool {
 	return i.node != nil
 }
 
-func (i Iterator) First() bool {
+func (i *treemapIterator) First() bool {
 	return i.node == i.tree.minimum
 }
 
-func (i Iterator) Last() bool {
+func (i *treemapIterator) Last() bool {
 	return i.node == i.tree.maximum
 }
 
-func (i Iterator) NextKey() interface{} {
+func (i *treemapIterator) NextKey() interface{} {
 	return i.node.key
 
 }
 
-func (i Iterator) NextValue() interface{} {
+func (i *treemapIterator) NextValue() interface{} {
 	return i.node.value
 }
 
-func (i Iterator) NextEntry() Pair {
+func (i *treemapIterator) NextEntry() Pair {
 	return Pair{
 		Key:   i.node.key,
 		Value: i.node.value,
 	}
 }
 
-func (i Iterator) Next() Iterator {
-	if i.HasNext() {
-		return Iterator{
-			tree: i.tree,
-			node: i.node.next(),
-		}
-	}
-	panic(NoSuchElementException)
+func (i *treemapIterator) Next() (collections.Value, error) {
+    r := i.node
+    c := r.next()
+    i.node = c
+    return r, nil
 }
