@@ -7,6 +7,7 @@ import (
     "github.com/stretchr/testify/assert"
     "github.com/sunshower-io/anvil/collections"
     "github.com/sunshower-io/anvil/f/strings"
+    "github.com/sunshower-io/anvil/f/refs"
 )
 
 func intFunc(value collections.Value) int {
@@ -121,6 +122,19 @@ func TestInsertionAndRemovalOfValuesWorks(t *testing.T) {
     assert.Equal(t, "world", u)
 }
 
+
+func TestReferentialEqualityWorks(t *testing.T) {
+    type refstruct struct{}
+    
+    a := &refstruct{}
+    b := a
+    
+    
+    m := NewLinearProbeHashMap(refs.ReferenceHashCode)
+    m.Put(a, "world")
+    assert.Equal(t, m.Get(b), "world")
+    
+}
 
 func TestIteratingViaRangeWorks(t *testing.T) {
     
