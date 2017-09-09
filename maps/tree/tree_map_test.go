@@ -50,6 +50,18 @@ func TestRemovingSingleValueWorks(t *testing.T) {
 	assert.Equal(t, tm.IsEmpty(), true)
 }
 
+func TestSimpleRangeIterationWorks(t *testing.T) {
+    
+    tm := NewTreeMap(compareInt)
+    tm.Put(1, 2)
+    tm.Put(2, 2)
+    count := 0
+    for v := range tm.Range() {
+        assert.NotNil(t, v)
+        count++
+    }
+    assert.Equal(t, count, 2)
+}
 
 func TestSimpleIterationWorks(t *testing.T) {
     

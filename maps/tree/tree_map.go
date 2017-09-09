@@ -60,6 +60,21 @@ func (t *TreeMap) Iterator() collections.Iterator {
 	return &treemapIterator{tree: t, node: t.minimum}
 }
 
+
+func (t *TreeMap) Range() <- chan collections.Value {
+    ch := make(chan collections.Value, t.size)
+    go func() {
+        defer close(ch)
+        for i := t.Iterator(); i.HasNext(); {
+            v, _ := i.Next()
+            ch <- v
+        }
+    }()
+    return ch
+    
+    
+}
+
 func (t *TreeMap) IsEmpty() bool {
 	return t.size == 0
 }
